@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # 3rd party
+    'django_celery_results',
     'rest_framework',
     'rest_framework_simplejwt',
     # my apps
@@ -71,6 +72,8 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'test_project.wsgi.application'
+
+BROKER_URL = os.getenv("BROKER_URL", "redis://127.0.0.1:6379/1")
 
 
 # Database
@@ -148,6 +151,15 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+
+# CELERY SETTINGS
+
+CELERY_BROKER_URL = BROKER_URL
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'django-db'
 
 
 # Static files (CSS, JavaScript, Images)
