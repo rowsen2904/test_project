@@ -115,6 +115,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# My custom Auth User Model
+
+AUTH_USER_MODEL = 'profiles.User'
+
 
 # Simple JWT settings
 
