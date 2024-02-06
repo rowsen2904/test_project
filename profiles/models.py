@@ -22,6 +22,7 @@ class User(AbstractUser):
     def create_new_referral_code(self):
         self.referral_code = uuid4().hex
         self.save()
+        return self.referral_code
 
 
 class Referral(models.Model):
