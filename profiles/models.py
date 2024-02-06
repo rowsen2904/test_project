@@ -12,12 +12,16 @@ class User(AbstractUser):
         null=True
     )
 
+    @property
+    def referrals_count(self):
+        return self.referrals.count()
+
+    def set_new_referral(self, referral):
+        return self.referrals.create(invited=referral)
+
     def create_new_referral_code(self):
         self.referral_code = uuid4().hex
         self.save()
-
-    def get_count_of_referrals(self):
-        print(self.referrals)
 
 
 class Referral(models.Model):
@@ -29,7 +33,6 @@ class Referral(models.Model):
     invited = models.OneToOneField(
         User,
         related_name='referral',
-        on_delete=models.SET_NULL,
-        null=True
+        on_delete=models.CASCADE,
     )
     created_at = models.DateTimeField(auto_now_add=True)
