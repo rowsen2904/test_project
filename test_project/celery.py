@@ -5,6 +5,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 
 from celery import Celery
+from celery.schedules import crontab
 
 from test_project.settings import TIME_ZONE
 
@@ -13,5 +14,11 @@ app = Celery("test_project", include=['core.tasks'])
 
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
+app.conf.beat_schedule = {
+    "delete_expired_referrals": {
+        "task": "core.tasks.delete_expired_referral_codes",
+        "schedule": crontab(day="*/1"),
+    },
+}
 
 app.conf.timezone = TIME_ZONE
