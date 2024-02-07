@@ -4,8 +4,8 @@ from . import views
 
 urlpatterns = [
     path(
-        'create-referral-code/',
-        views.CreateReferralCodeAPIView.as_view(),
-        name='create-referral-code'
+        'referral-code/',
+        views.ReferralCodeAPIView.as_view(),
+        name='referral-code'
     )
 ]

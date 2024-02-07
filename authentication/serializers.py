@@ -35,6 +35,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'referral_code',
+            'expiration_date',
         )
         extra_kwargs = {
             'first_name': {'required': True},
