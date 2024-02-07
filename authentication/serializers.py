@@ -24,6 +24,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         write_only=True,
         required=False
     )
+    expiration_date = serializers.DateField(read_only=True)
 
     class Meta:
         model = User

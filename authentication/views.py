@@ -10,7 +10,7 @@ class RegisterView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         user = super().post(request, *args, **kwargs)
-        referral_code = user.data.get("referral_code")
+        referral_code = request.data.get("referral_code")
         if referral_code is not None:
             try:
                 inviter = User.objects.get(referral_code=referral_code)
