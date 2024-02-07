@@ -15,9 +15,10 @@ app = Celery("test_project", include=['core.tasks'])
 app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 app.conf.beat_schedule = {
+    # Every day
     "delete_expired_referrals": {
         "task": "core.tasks.delete_expired_referral_codes",
-        "schedule": crontab(day="*/1"),
+        "schedule": crontab(hour=0),
     },
 }
 
