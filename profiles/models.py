@@ -1,7 +1,7 @@
 from datetime import timedelta
 from uuid import uuid4
 
-from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.models import UserManager
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
@@ -12,7 +12,7 @@ class UserQuerySet(models.QuerySet):
         return self.filter(is_active=True)
 
 
-class UserManager(BaseUserManager.from_queryset(UserQuerySet)):  # type: ignore
+class UserManager(UserManager.from_queryset(UserQuerySet)):  # type: ignore
     def get_users_with_expired_referral(self):
         return self.filter(expiration_date__lte=timezone.now().date(), referral_code__isnull=False)
 

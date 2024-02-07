@@ -1,4 +1,5 @@
 from django.conf import settings
+from drf_spectacular.utils import extend_schema, OpenApiParameter
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -14,6 +15,9 @@ class ReferralCodeAPIView(GenericAPIView):
     email_subject = 'Referral Code Information'
     from_email = settings.EMAIL_HOST_USER
 
+    @extend_schema(
+        description="Referral code creator. To create new referral code you have to be logged in to"
+    )
     def get(self, request, *args, **kwargs):
         referral_code = request.user.create_new_referral_code()
         send_email.delay(
@@ -24,6 +28,9 @@ class ReferralCodeAPIView(GenericAPIView):
         )
         return Response({'referral_code': referral_code}, status=200)
 
+    @extend_schema(
+        description="Referral code deleter. To delete your referral code you have to be logged in to"
+    )
     def delete(self, request, *args, **kwargs):
         request.user.delete_referral_code()
         send_email.delay(
@@ -38,6 +45,12 @@ class ReferralCodeAPIView(GenericAPIView):
 class MyReferralsAPIView(GenericAPIView):
     queryset = User.objects.all()
 
+    @extend_schema(
+        parameters=[
+            OpenApiParameter(name='inviter_id', description='Id of inviter(referrer)', required=True, type=int),
+        ],
+        description="Its getter of referrals by id of referrer",
+    )
     def get(self, request, *args, **kwargs):
         inviter_id = request.query_params.get('inviter_id')
         if inviter_id is not None:
